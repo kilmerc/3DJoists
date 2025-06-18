@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "author": "Sebastian Alff <donalffons@gmail.com>",
   "license": "MIT",
-  "homepage": "https://donalffons.github.io/opencascade.js-examples",
+  "homepage": "https://kilmerc.github.io/3DJoists/",
   "devDependencies": {
     "copy-webpack-plugin": "^9.0.0",
     "file-loader": "^6.2.0",
@@ -17,11 +17,11 @@
   },
   "scripts": {
     "start": "webpack serve --mode development --open",
-    "build": "rm dist -fr && webpack --mode=production",
-    "deploy": "gh-pages -d dist"
+    "build": "rimraf docs && webpack --mode=production"
   },
   "dependencies": {
     "opencascade.js": "^2.0.0-beta.54fa06a",
+    "rimraf": "^6.0.1",
     "three": "^0.124.0"
   }
 }

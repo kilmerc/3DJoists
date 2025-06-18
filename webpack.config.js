@@ -15,6 +15,12 @@ module.exports = {
     }, {})
     return result
   },
+
+  output: {
+    path: path.resolve(__dirname, 'docs'),
+    filename: 'demos/[name]/bundle.js'
+  },
+
   devServer: {
     contentBase: path.join(__dirname, 'src'),
     compress: true,
