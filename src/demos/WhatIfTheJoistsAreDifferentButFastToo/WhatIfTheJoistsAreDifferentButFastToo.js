@@ -31,14 +31,16 @@ export async function initializeJoistLibrary(oc) {
   // Store in library with different "variant IDs" - in reality these would be 
   // different joist specifications (different lengths, depths, web patterns, etc.)
   // but for demo purposes we'll reuse the same tessellated geometry
-  for (let i = 0; i < 100; i++) {
-    const variantId = `JOIST_48FT_36D_PATTERN_${i}`;
+  for (let i = 0; i < 1000; i++) {
+    const variantId = `JOIST_${Math.floor(i/20)+40}FT_${30+(i%8)*3}D_PAT${i%50}_REV${Math.floor(i/100)}`;
     JOIST_LIBRARY.set(variantId, {
       geometry: tessellatedGeometry,
       metadata: {
-        length: 48 * 12 + (i % 5) * 12, // Simulate different lengths
-        depth: 36 + (i % 3) * 6,         // Simulate different depths
-        pattern: `Pattern_${i % 10}`,    // Simulate different web patterns
+        length: (Math.floor(i/20) + 40) * 12,    // 40-89 ft lengths
+        depth: 30 + (i % 8) * 3,                 // 30-51 inch depths
+        pattern: `WebPattern_${i % 50}`,         // 50 different web patterns
+        revision: Math.floor(i / 100),           // Design revisions
+        loadRating: 50 + (i % 30) * 5,          // 50-195 load ratings
       }
     });
   }
@@ -134,9 +136,15 @@ export function instantiateJoistFromLibrary(joistIndex, bayIndex, floorIndex) {
   // Simulate your real-world logic for selecting appropriate joist variant
   // In reality, this would look up based on structural requirements, load calculations, etc.
   
-  // Fast lookup based on position/requirements (simulates engineering logic)
-  const variantIndex = (joistIndex + bayIndex * 7 + floorIndex * 13) % 100;
-  const variantId = `JOIST_48FT_36D_PATTERN_${variantIndex}`;
+  // More sophisticated lookup based on position/requirements (simulates engineering logic)
+  // This creates a more realistic distribution across the 1000 variants
+  const structuralHash = (joistIndex * 7 + bayIndex * 23 + floorIndex * 41) % 1000;
+  const lengthCategory = Math.floor(structuralHash / 20) + 40; // 40-89 ft
+  const depthCategory = 30 + (structuralHash % 8) * 3;         // 30-51 inch
+  const patternNum = structuralHash % 50;                      // 0-49 patterns
+  const revision = Math.floor(structuralHash / 100);          // 0-9 revisions
+  
+  const variantId = `JOIST_${lengthCategory}FT_${depthCategory}D_PAT${patternNum}_REV${revision}`;
   
   const libraryEntry = JOIST_LIBRARY.get(variantId);
   if (!libraryEntry) {
@@ -156,6 +164,10 @@ export function instantiateJoistFromLibrary(joistIndex, bayIndex, floorIndex) {
 export function getLibraryStats() {
   return {
     totalVariants: JOIST_LIBRARY.size,
-    memoryFootprint: `~${(JOIST_LIBRARY.size * 2).toFixed(1)}MB`, // Rough estimate
+    memoryFootprint: `~${(JOIST_LIBRARY.size * 2).toFixed(1)}MB`, // Rough estimate for 1000 variants
+    lengthRange: "40-89 feet",
+    depthRange: "30-51 inches", 
+    webPatterns: "50 unique patterns",
+    designRevisions: "10 revisions"
   };
 }

@@ -48,11 +48,13 @@ function setupPerformanceMonitor(renderer) {
 function updateLibraryInfo(stats, uniqueJoistCount, avgInstantiationTime) {
   const variantsElement = document.getElementById("library-variants");
   const libraryMemoryElement = document.getElementById("library-memory");
+  const librarySpecsElement = document.getElementById("library-specs");
   const uniqueJoistsElement = document.getElementById("unique-joists");
   const instantiationElement = document.getElementById("instantiation-speed");
   
   variantsElement.textContent = `Variants: ${stats.totalVariants}`;
   libraryMemoryElement.textContent = `Library Size: ${stats.memoryFootprint}`;
+  librarySpecsElement.textContent = `Specs: ${stats.lengthRange}, ${stats.depthRange}`;
   uniqueJoistsElement.textContent = `Unique Instances: ${uniqueJoistCount}`;
   instantiationElement.textContent = `Avg Instantiation: ${avgInstantiationTime}ms`;
 }
