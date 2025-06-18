@@ -1,0 +1,81 @@
+<!doctype html><html><head><meta charset="utf-8"><title>OpenCascade.js :: What If The Joists Are Different But Fast Too</title><script defer="defer" src="../../demos/WhatIfTheJoistsAreDifferentButFastToo/bundle.js"></script></head><style>body {
+			margin: 0;
+			overflow: hidden;
+		}
+		#viewport {
+			width: 100vw;
+			height: 100vh;
+		}
+		#info {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			color: white;
+			background: rgba(0,0,0,0.7);
+			padding: 10px;
+			border-radius: 5px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+		}
+		#controls-info {
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+			color: white;
+			background: rgba(0,0,0,0.7);
+			padding: 10px;
+			border-radius: 5px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			text-align: right;
+		}
+		#performance-info {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			color: white;
+			background: rgba(0,0,0,0.7);
+			padding: 10px;
+			border-radius: 5px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			text-align: right;
+		}
+		#library-info {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			color: white;
+			background: rgba(0,0,0,0.7);
+			padding: 10px;
+			border-radius: 5px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+		}
+        /* Added for the loader */
+		#loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #loader.hidden {
+            display: none;
+        }
+        #progress-text {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        #time-info {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #ccc;
+        }</style><body><div id="viewport"></div><div id="loader"><h2>Simulating Library-Based Approach...</h2><p id="progress-text">Initializing...</p><p id="time-info">Pre-tessellating joist library (one-time cost)</p></div><div id="info"><strong>Library-Based Unique Joists</strong><br>5 Floors × 10 Bays × 100 Joists = 5000 Joists, 1000 unique marks<br>Joist Spacing: 8 feet<br>Bay Width: 48 feet<br>Story Height: 32 feet<br><small style="color: #00ff00;">✓ Using pre-tessellated library</small></div><div id="performance-info"><strong>Performance Monitor</strong><br><span id="fps">FPS: --</span><br><span id="triangles">Triangles: --</span><br><span id="draw-calls">Draw Calls: --</span><br><span id="memory">Memory: --</span><br><span id="instantiation-speed">Avg Instantiation: --</span></div><div id="library-info"><strong>Joist Library</strong><br><span id="library-variants">Variants: --</span><br><span id="library-memory">Library Size: --</span><br><span id="library-specs">Specs: --</span><br><span id="unique-joists">Unique Instances: --</span></div><div id="controls-info"><b>Navigation</b><br>Rotate: Left Mouse<br>Pan: Right Mouse<br>Zoom: Mouse Wheel<br><br><small style="color: #00ff00;">Simulates C++ library approach:<br>• 1000 pre-tessellated variants<br>• Lightning-fast instantiation<br>• Minimal runtime overhead</small></div></body></html>
