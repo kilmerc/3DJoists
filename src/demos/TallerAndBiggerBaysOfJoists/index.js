@@ -1,7 +1,7 @@
 import initOpenCascade from "opencascade.js";
 import * as THREE from "three";
-import { CreateJoist } from '../Joists/Joist.js';
-import { setupThreeJSViewport } from '../../common/scene.js';
+import { CreateJoistTemplate } from "./TallerAndBiggerBaysOfJoists.js";
+import { setupThreeJSViewport } from "../../common/scene.js";
 
 function tessellateShape(oc, shape) {
   // Apply mesh generation with appropriate parameters
@@ -114,29 +114,31 @@ async function main() {
     const oc = await initOpenCascade();
 
     progressText.innerText = "Creating joist template...";
-    const templateJoist = await CreateJoist(oc);
+    const templateShape = await CreateJoistTemplate(oc);
 
     progressText.innerText = "Tessellating template shape...";
-    const { mesh, material } = tessellateShape(oc, templateJoist);
+    const { mesh, material } = tessellateShape(oc, templateShape);
     const geometry = mesh.geometry;
     
     // Clean up the template shape
-    templateJoist.delete();
+    templateShape.delete();
 
     progressText.innerText = "Setting up instanced rendering...";
 
-    const joistsPerBay = 50;
-    const numberOfBays = 5;
+    const joistsPerBay = 100;
+    const numberOfBays = 10;
+    const numberOfFloors = 5;
     const joistSpacing = 8 * 12;    // 8 feet in inches
-    const bayWidth = 48 * 12;       // 48 feet in inches (width of each joist)
-    const totalJoists = numberOfBays * joistsPerBay;
+    const bayWidth = 48 * 12;       // 48 feet in inches
+    const storyHeight = 32 * 12;    // 32 feet in inches
+    const totalJoists = numberOfFloors * numberOfBays * joistsPerBay;
 
-    // Calculate total dimensions
-    const totalLength = (joistsPerBay - 1) * joistSpacing;  // Length of one bay
-    const totalWidth = numberOfBays * bayWidth;              // Total width across all bays
+    const totalLength = (joistsPerBay - 1) * joistSpacing;
+    const totalWidth = numberOfBays * bayWidth;
+    const totalHeight = (numberOfFloors - 1) * storyHeight;
 
-    console.log(`Creating ${numberOfBays} bays with ${joistsPerBay} joists each...`);
-    console.log(`Total dimensions: ${totalLength/12}' x ${totalWidth/12}'`);
+    console.log(`Creating ${numberOfFloors} floors with ${numberOfBays} bays and ${joistsPerBay} joists each...`);
+    console.log(`Total dimensions: ${totalLength/12}' x ${totalWidth/12}' x ${totalHeight/12}'`);
     console.log(`Total joists to create: ${totalJoists}`);
 
     const instancedMesh = new THREE.InstancedMesh(
@@ -151,32 +153,33 @@ async function main() {
 
     progressText.innerText = "Positioning joists...";
 
-    // Create each bay
-    for (let bayIndex = 0; bayIndex < numberOfBays; bayIndex++) {
-      // Create joists for this bay
-      for (let joistIndex = 0; joistIndex < joistsPerBay; joistIndex++) {
-        const xPosition = joistIndex * joistSpacing - totalLength / 2;
-        const zPosition = bayIndex * bayWidth - totalWidth / 2 + bayWidth / 2;
-        
-        // Rotate 90 degrees around Y-axis (same as the original transformation)
-        matrix.makeRotationY(Math.PI / 2);
-        matrix.setPosition(xPosition, 0, zPosition);
-        
-        instancedMesh.setMatrixAt(joistCount, matrix);
-        joistCount++;
+    // Create each floor
+    for (let floorIndex = 0; floorIndex < numberOfFloors; floorIndex++) {
+      const yPosition = floorIndex * storyHeight;
+      
+      // Create each bay on this floor
+      for (let bayIndex = 0; bayIndex < numberOfBays; bayIndex++) {
+        // Create joists for this bay
+        for (let joistIndex = 0; joistIndex < joistsPerBay; joistIndex++) {
+          const xPosition = joistIndex * joistSpacing - totalLength / 2;
+          const zPosition = bayIndex * bayWidth - totalWidth / 2 + bayWidth / 2;
+
+          matrix.setPosition(xPosition, yPosition, zPosition);
+          instancedMesh.setMatrixAt(joistCount, matrix);
+
+          joistCount++;
+        }
       }
 
-      // Update progress less frequently to avoid blocking
-      if (bayIndex % 1 === 0) {
-        const percentage = Math.round((joistCount / totalJoists) * 100);
-        progressText.innerText = `Positioning joist ${joistCount} of ${totalJoists} (${percentage}%)`;
-        await new Promise((resolve) => setTimeout(resolve, 0));
-      }
+      // Update progress per floor to avoid blocking
+      const percentage = Math.round((joistCount / totalJoists) * 100);
+      progressText.innerText = `Positioning floor ${floorIndex + 1} of ${numberOfFloors} - ${joistCount} of ${totalJoists} joists (${percentage}%)`;
+      await new Promise((resolve) => setTimeout(resolve, 0));
     }
 
     instancedMesh.instanceMatrix.needsUpdate = true;
 
-    console.log(`Instanced mesh created with ${totalJoists} joists!`);
+    console.log(`Instanced mesh created with ${totalJoists} joists across ${numberOfFloors} floors!`);
     progressText.innerText = "Complete!";
     
     // Small delay before hiding loader to show completion message
