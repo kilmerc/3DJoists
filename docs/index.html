@@ -1,47 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <title>opencascade.js Examples</title>
-</head>
-<body>
-  <h1>Examples</h1>
-  <ul>
-    <li><a href="demos/Joists/index.html">Open Web Steel Joist</a></li>
+  <head>
+    <title>opencascade.js Examples</title>
+  </head>
+  <body>
+    <h1>Examples</h1>
     <ul>
+      <li><a href="demos/Joists/index.html">Open Web Steel Joist</a></li>
+      <ul>
+        <li>
+          Models a parametric open web steel joist with back-to-back angle
+          chords. SLOW
+        </li>
+      </ul>
+      <li><a href="demos/BaysOfJoists">Bays of Joists</a></li>
+      <ul>
+        <li>
+          Creates a building roof structure with 250 open web steel joists
+          arranged in 5 bays of 50 joists each, spaced 8 feet apart. SLOW
+        </li>
+      </ul>
+      <li><a href="demos/BiggerBaysOfJoists/">Bigger Bays of Joists</a></li>
+      <ul>
+        <li>
+          Creates a building roof structure with 1000 open web steel joists
+          arranged in 10 bays of 100 joists each, spaced 8 feet apart. SLOW
+        </li>
+      </ul>
       <li>
-        Models a parametric open web steel joist with back-to-back angle chords.
+        <a href="demos/TallerAndBiggerBaysOfJoists/"
+          >Taller & Bigger Bays of Joists</a
+        >
       </li>
-    </ul>
-    <li><a href="demos/BaysOfJoists">Bays of Joists</a></li>
-    <ul>
+      <ul>
+        <li>
+          Creates a multi-story building structure with 5000 open web steel
+          joists arranged in 5 floors of 10 bays with 100 joists each. Story
+          height: 32 feet. Same joist copied, so not realistic
+        </li>
+      </ul>
       <li>
-        Creates a building roof structure with 250 open web steel joists arranged in 5 bays of 50 joists each, spaced 8 feet apart.
+        <a href="demos/WhatIfTheJoistsAreDifferent/"
+          >What If The Joists Are All Different</a
+        >
       </li>
-    </ul>
-    <li><a href="demos/BiggerBaysOfJoists/">Bigger Bays of Joists</a></li>
-    <ul>
+      <ul>
+        <li>
+          Creates the same multi-story building, but treats each joist as unique
+          to test performance. TAKES LIKE 15 MINUTES SO I DON'T RECOMMEND IT
+          CLICKING THIS LINK. TRY THE ONE BELOW INSTEAD.
+        </li>
+      </ul>
       <li>
-        Creates a building roof structure with 1000 open web steel joists arranged in 10 bays of 100 joists each, spaced 8 feet apart.
+        <a href="demos/WhatIfTheJoistsAreDifferentButFastToo/"
+          >What If The Joists Are All Different But Fast Too</a
+        >
       </li>
+      <ul>
+        <li>
+          Creates the same multi-story building, but uses a faster algorithm for rendering.
+          Simulates 5000 joists with 1000 unique marks.
+        </li>
+        <li>
+          OpenCascade is doing the geometric modeling and tessellation. Three.js
+          handles all the rendering. The speed comes from doing the expensive
+          OpenCascade work once upfront, then using fast GPU rendering for the
+          5000 instances.
+        </li>
+        <li>
+          This simulates an architecture where OpenCascade does the heavy
+          geometric lifting during library creation, but runtime instantiation
+          is just fast data lookups and GPU rendering.
+        </li>
+      </ul>
     </ul>
-    <li><a href="demos/TallerAndBiggerBaysOfJoists/">Taller & Bigger Bays of Joists</a></li>
-    <ul>
-      <li>
-        Creates a multi-story building structure with 5000 open web steel joists arranged in 5 floors of 10 bays with 100 joists each. Story height: 32 feet.
-      </li>
-    </ul>
-    <li><a href="demos/WhatIfTheJoistsAreDifferent/">What If The Joists Are All Different</a></li>
-    <ul>
-      <li>
-        Creates the same multi-story building, but treats each joist as unique to test performance. TAKES LIKE 15 MINUTES SO I DON'T RECOMMEND IT CLICKING THIS LINK. TRY THE ONE BELOW INSTEAD.
-      </li>
-    </ul>
-        <li><a href="demos/WhatIfTheJoistsAreDifferentButFastToo/">What If The Joists Are All Different But Fast Too</a></li>
-    <ul>
-      <li>
-        Creates the same multi-story building, but treats each joist as unique to test performance AND uses a faster algorithm for rendering. Simulates 5000 joists with 1000 unique marks.
-      </li>
-    </ul>
-  </ul>
-</body>
+  </body>
 </html>
