@@ -16,10 +16,11 @@
 			border-radius: 5px;
 			font-family: Arial, sans-serif;
 			font-size: 14px;
+			z-index: 100;
 		}
 		#controls-info {
 			position: absolute;
-			bottom: 10px;
+			bottom: 150px;
 			right: 10px;
 			color: white;
 			background: rgba(0,0,0,0.7);
@@ -28,10 +29,11 @@
 			font-family: Arial, sans-serif;
 			font-size: 14px;
 			text-align: right;
+			z-index: 100;
 		}
 		#performance-info {
 			position: absolute;
-			top: 10px;
+			top: 60px;
 			right: 10px;
 			color: white;
 			background: rgba(0,0,0,0.7);
@@ -40,10 +42,11 @@
 			font-family: Arial, sans-serif;
 			font-size: 14px;
 			text-align: right;
+			z-index: 100;
 		}
 		#library-info {
 			position: absolute;
-			bottom: 10px;
+			bottom: 300px;
 			left: 10px;
 			color: white;
 			background: rgba(0,0,0,0.7);
@@ -51,9 +54,9 @@
 			border-radius: 5px;
 			font-family: Arial, sans-serif;
 			font-size: 14px;
+			z-index: 100;
 		}
-        /* Added for the loader */
-		#loader {
+        #loader {
             position: absolute;
             top: 0;
             left: 0;
@@ -66,6 +69,7 @@
             flex-direction: column;
             color: white;
             font-family: Arial, sans-serif;
+            z-index: 2000;
         }
         #loader.hidden {
             display: none;
@@ -78,4 +82,24 @@
             margin-top: 5px;
             font-size: 14px;
             color: #ccc;
-        }</style><body><div id="viewport"></div><div id="loader"><h2>Simulating Library-Based Approach...</h2><p id="progress-text">Initializing...</p><p id="time-info">Pre-tessellating joist library (one-time cost)</p></div><div id="info"><strong>Library-Based Unique Joists</strong><br>5 Floors × 10 Bays × 100 Joists = 5000 Joists, 1000 unique marks<br>Joist Spacing: 8 feet<br>Bay Width: 48 feet<br>Story Height: 32 feet<br><small style="color: #00ff00;">✓ Using pre-tessellated library</small></div><div id="performance-info"><strong>Performance Monitor</strong><br><span id="fps">FPS: --</span><br><span id="triangles">Triangles: --</span><br><span id="draw-calls">Draw Calls: --</span><br><span id="memory">Memory: --</span><br><span id="instantiation-speed">Avg Instantiation: --</span></div><div id="library-info"><strong>Joist Library</strong><br><span id="library-variants">Variants: --</span><br><span id="library-memory">Library Size: --</span><br><span id="library-specs">Specs: --</span><br><span id="unique-joists">Unique Instances: --</span></div><div id="controls-info"><b>Navigation</b><br>Rotate: Left Mouse<br>Pan: Right Mouse<br>Zoom: Mouse Wheel<br><br><small style="color: #00ff00;">Simulates C++ library approach:<br>• 1000 pre-tessellated variants<br>• Lightning-fast instantiation<br>• Minimal runtime overhead</small></div></body></html>
+        }
+        
+        /* View controls styling */
+        .view-btn {
+            background: rgba(0,102,255,0.3);
+            color: white;
+            border: 1px solid #0066ff;
+            padding: 4px 2px;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            min-height: 24px;
+        }
+        .view-btn:hover {
+            background: rgba(0,102,255,0.6);
+            transform: scale(1.05);
+        }
+        .view-btn:active {
+            transform: scale(0.95);
+        }</style><body><div id="viewport"></div><div id="loader"><h2>Simulating Library-Based Approach...</h2><p id="progress-text">Initializing...</p><p id="time-info">Pre-tessellating joist library (one-time cost)</p></div><div id="info"><strong>Library-Based Unique Joists</strong><br>5 Floors × 10 Bays × 100 Joists = 5000 Joists, 1000 unique marks<br>Joist Spacing: 8 feet<br>Bay Width: 48 feet<br>Story Height: 32 feet<br><small style="color: #00ff00;">✓ Using pre-tessellated library</small></div><div id="performance-info"><strong>Performance Monitor</strong><br><span id="fps">FPS: --</span><br><span id="triangles">Triangles: --</span><br><span id="draw-calls">Draw Calls: --</span><br><span id="memory">Memory: --</span><br><span id="instantiation-speed">Avg Instantiation: --</span></div><div id="library-info"><strong>Joist Library</strong><br><span id="library-variants">Variants: --</span><br><span id="library-memory">Library Size: --</span><br><span id="library-specs">Specs: --</span><br><span id="unique-joists">Unique Instances: --</span></div><div id="controls-info"><b>Navigation</b><br>Rotate: Left Mouse<br>Pan: Right Mouse<br>Zoom: Mouse Wheel<br><br><b>📐 View Controls</b><br>Toggle: Top-right button<br>View Cube: Bottom-right<br><br><small style="color: #00ff00;">Simulates C++ library approach:<br>• 1000 pre-tessellated variants<br>• Lightning-fast instantiation<br>• Minimal runtime overhead</small></div></body></html>

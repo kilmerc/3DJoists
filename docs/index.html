@@ -72,6 +72,13 @@
           geometric lifting during library creation, but runtime instantiation
           is just fast data lookups and GPU rendering.
         </li>
+        <li>
+          The idea would be we represent our models using a library of 
+          predefined shapes and objects that are parameterized.
+          Any tool could then pluck what component they need from the library
+          and instantiate it quickly, without needing to do the heavy OpenCascade
+          work again. Extending it or new demands is easy to handle.
+        </li>
       </ul>
       <li>
         <a href="demos/TheBigKahuna/"
@@ -81,7 +88,7 @@
       <ul>
         <li>
           <strong>THE ULTIMATE STRESS TEST:</strong> Creates a massive 10-story
-          building with <strong>10,000 open web steel joists</strong> using 2000
+          building with <strong>10,000 open web steel joists</strong> using 10000
           unique marks from a pre-tessellated library.
         </li>
         <li>
@@ -90,7 +97,7 @@
           fast library-based approach but scaled up 2x.
         </li>
         <li>
-          <strong>Library approach:</strong> 2000 pre-tessellated joist variants
+          <strong>Library approach:</strong> 10000 pre-tessellated joist variants
           with expanded specifications (35-84 ft lengths, 24-46" depths, 75 web
           patterns, multiple steel grades). Simulates a comprehensive structural
           engineering library.
