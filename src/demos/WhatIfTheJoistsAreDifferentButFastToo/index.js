@@ -7,6 +7,10 @@ import {
 } from "./WhatIfTheJoistsAreDifferentButFastToo.js";
 import { setupThreeJSViewport } from "../../common/scene.js";
 
+// Global state for floor management and design simulation
+let joistsByFloor = []; // Array of arrays: joistsByFloor[floor][joist]
+let originalMaterials = new Map(); // Store original materials for design simulation
+
 // Performance monitoring
 function setupPerformanceMonitor(renderer) {
   const fpsElement = document.getElementById("fps");
@@ -59,6 +63,130 @@ function updateLibraryInfo(stats, uniqueJoistCount, avgInstantiationTime) {
   instantiationElement.textContent = `Avg Instantiation: ${avgInstantiationTime}ms`;
 }
 
+// Setup floor visibility controls
+function setupFloorControls(numberOfFloors) {
+  const floorCheckboxes = document.getElementById("floor-checkboxes");
+  
+  for (let i = 0; i < numberOfFloors; i++) {
+    const floorDiv = document.createElement("div");
+    floorDiv.className = "floor-checkbox";
+    
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = `floor-${i}`;
+    checkbox.checked = true;
+    checkbox.addEventListener("change", () => toggleFloorVisibility(i, checkbox.checked));
+    
+    const label = document.createElement("label");
+    label.htmlFor = `floor-${i}`;
+    label.textContent = `Floor ${i + 1}`;
+    
+    floorDiv.appendChild(checkbox);
+    floorDiv.appendChild(label);
+    floorCheckboxes.appendChild(floorDiv);
+  }
+}
+
+// Toggle floor visibility
+function toggleFloorVisibility(floorIndex, visible) {
+  if (joistsByFloor[floorIndex]) {
+    const startTime = performance.now();
+    joistsByFloor[floorIndex].forEach(mesh => {
+      mesh.visible = visible;
+    });
+    const endTime = performance.now();
+    console.log(`Floor ${floorIndex + 1} visibility toggled to ${visible} in ${(endTime - startTime).toFixed(2)}ms`);
+  }
+}
+
+// Setup design run simulation
+function setupDesignControls() {
+  const designRunBtn = document.getElementById("design-run-btn");
+  
+  designRunBtn.addEventListener("click", () => {
+    simulateDesignRun();
+  });
+}
+
+// Simulate design run with color changes
+function simulateDesignRun() {
+  const designRunBtn = document.getElementById("design-run-btn");
+  designRunBtn.disabled = true;
+  designRunBtn.textContent = "Running Design Analysis...";
+  
+  const startTime = performance.now();
+  
+  // Define stress state colors
+  const stressStates = [
+    { color: 0x00ff00, name: "Good" },        // Green - within limits
+    { color: 0xffff00, name: "Near-limit" }, // Yellow - approaching limits
+    { color: 0xff0000, name: "Over-stressed" } // Red - over-stressed
+  ];
+  
+  // Create materials for each stress state if they don't exist
+  const stressMaterials = stressStates.map(state => 
+    new THREE.MeshPhongMaterial({
+      color: state.color,
+      side: THREE.DoubleSide
+    })
+  );
+  
+  let processedCount = 0;
+  const totalJoists = joistsByFloor.flat().length;
+  
+  // Process joists in batches to prevent UI freezing
+  function processBatch() {
+    const batchSize = 200;
+    const endIndex = Math.min(processedCount + batchSize, totalJoists);
+    
+    for (let floorIndex = 0; floorIndex < joistsByFloor.length; floorIndex++) {
+      for (let joistIndex = 0; joistIndex < joistsByFloor[floorIndex].length; joistIndex++) {
+        if (processedCount >= endIndex) break;
+        
+        const mesh = joistsByFloor[floorIndex][joistIndex];
+        
+        // Store original material if not already stored
+        if (!originalMaterials.has(mesh)) {
+          originalMaterials.set(mesh, mesh.material);
+        }
+        
+        // Randomly assign stress state (simulate real analysis results)
+        const stressStateIndex = Math.floor(Math.random() * stressStates.length);
+        mesh.material = stressMaterials[stressStateIndex];
+        mesh.userData.stressState = stressStates[stressStateIndex].name;
+        
+        processedCount++;
+      }
+      if (processedCount >= endIndex) break;
+    }
+    
+    // Update button text with progress
+    const progress = Math.round((processedCount / totalJoists) * 100);
+    designRunBtn.textContent = `Analyzing... ${progress}%`;
+    
+    if (processedCount < totalJoists) {
+      // Continue processing
+      setTimeout(processBatch, 0);
+    } else {
+      // Complete
+      const endTime = performance.now();
+      const analysisTime = (endTime - startTime).toFixed(1);
+      
+      console.log(`Design analysis complete: ${totalJoists} joists analyzed in ${analysisTime}ms`);
+      console.log(`Average time per joist: ${(parseFloat(analysisTime) / totalJoists).toFixed(3)}ms`);
+      
+      designRunBtn.textContent = `Analysis Complete (${analysisTime}ms)`;
+      setTimeout(() => {
+        designRunBtn.disabled = false;
+        designRunBtn.textContent = "Simulate Joist Design Run";
+      }, 2000);
+    }
+  }
+  
+  // Start batch processing
+  processBatch();
+}
+
 // Fast joist creation using library approach
 async function createJoistsFromLibrary(scene, progressCallback) {
   const joistsPerBay = 100;
@@ -76,6 +204,9 @@ async function createJoistsFromLibrary(scene, progressCallback) {
   const uniqueVariants = new Set();
   let joistCount = 0;
   const instantiationTimes = [];
+
+  // Initialize floor arrays
+  joistsByFloor = Array(numberOfFloors).fill(null).map(() => []);
 
   // Shared material for optimization
   const material = new THREE.MeshPhongMaterial({
@@ -105,11 +236,15 @@ async function createJoistsFromLibrary(scene, progressCallback) {
         mesh.position.set(xPosition, yPosition, zPosition);
         mesh.userData = {
           variantId: joistData.variantId,
-          metadata: joistData.metadata
+          metadata: joistData.metadata,
+          floor: floorIndex,
+          bay: bayIndex,
+          joist: joistIndex
         };
         
         scene.add(mesh);
         allMeshes.push(mesh);
+        joistsByFloor[floorIndex].push(mesh);
         
         joistCount++;
         
@@ -139,7 +274,8 @@ async function createJoistsFromLibrary(scene, progressCallback) {
   return {
     meshes: allMeshes,
     uniqueVariantsUsed: uniqueVariants.size,
-    avgInstantiationTime: avgInstantiationTime
+    avgInstantiationTime: avgInstantiationTime,
+    numberOfFloors: numberOfFloors
   };
 }
 
@@ -202,6 +338,10 @@ async function main() {
     
     // Update final library info
     updateLibraryInfo(stats, result.uniqueVariantsUsed, result.avgInstantiationTime);
+    
+    // Setup floor and design controls
+    setupFloorControls(result.numberOfFloors);
+    setupDesignControls();
     
     // Setup performance monitoring
     if (scene.userData?.renderer) {

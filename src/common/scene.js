@@ -131,7 +131,7 @@ export function setupThreeJSViewport() {
     cameraToggleButton.style.background = "rgba(0,0,0,0.8)";
   });
 
-  // Create view cube
+  // Create view cube with adjusted positioning to avoid overlap
   const viewCube = document.createElement("div");
   viewCube.style.cssText = `
     position: absolute;
