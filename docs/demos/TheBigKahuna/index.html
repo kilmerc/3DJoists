@@ -21,7 +21,7 @@
 		}
 		#controls-info {
 			position: absolute;
-			bottom: 150px;
+			bottom: 270px;
 			right: 10px;
 			color: white;
 			background: rgba(0,0,0,0.8);
@@ -49,7 +49,7 @@
 		}
 		#library-info {
 			position: absolute;
-			bottom: 300px;
+			bottom: 470px;
 			left: 10px;
 			color: white;
 			background: rgba(0,0,0,0.8);
@@ -58,6 +58,34 @@
 			font-family: Arial, sans-serif;
 			font-size: 14px;
 			border: 2px solid #0066ff;
+			z-index: 100;
+		}
+		#floor-controls {
+			position: absolute;
+			top: 150px;
+			left: 10px;
+			color: white;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
+			font-family: Arial, sans-serif;
+			font-size: 12px;
+			border: 2px solid #ff6600;
+			z-index: 100;
+			max-height: 280px;
+			overflow-y: auto;
+		}
+		#design-controls {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			color: white;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			border: 2px solid #ff00ff;
 			z-index: 100;
 		}
         #loader {
@@ -125,4 +153,62 @@
         }
         .view-btn:active {
             transform: scale(0.95);
-        }</style><body><div id="viewport"></div><div id="loader"><h2>🌺 THE BIG KAHUNA 🌺</h2><p id="progress-text">Initializing ultimate stress test...</p><p id="time-info">Pre-tessellating 10000-variant joist library</p></div><div id="info"><strong>🌺 THE BIG KAHUNA - Ultimate Stress Test 🌺</strong><br><span style="color: #ff6600;">10 Floors × 10 Bays × 100 Joists = <strong>10,000 Joists</strong></span><br><span style="color: #00ff00;">10000 unique marks from library</span><br>Joist Spacing: 8 feet<br>Bay Width: 48 feet<br>Story Height: 32 feet<br>Building Height: 320 feet<br><small style="color: #00ff00;">✓ Using pre-tessellated library approach</small></div><div id="performance-info"><strong>🚀 Performance Monitor</strong><br><span id="fps">FPS: --</span><br><span id="triangles">Triangles: --</span><br><span id="draw-calls">Draw Calls: --</span><br><span id="memory">Memory: --</span><br><span id="instantiation-speed">Avg Instantiation: --</span><br><span id="gpu-memory">GPU Memory: --</span></div><div id="library-info"><strong>📚 Joist Library (Big Kahuna)</strong><br><span id="library-variants">Variants: --</span><br><span id="library-memory">Library Size: --</span><br><span id="library-specs">Length Range: --</span><br><span id="library-depths">Depth Range: --</span><br><span id="library-patterns">Web Patterns: --</span><br><span id="unique-joists">Unique Instances: --</span></div><div id="controls-info"><b>🎮 Navigation</b><br>Rotate: Left Mouse<br>Pan: Right Mouse<br>Zoom: Mouse Wheel<br><br><b>📐 View Controls</b><br>Toggle: Top-right button<br>View Cube: Bottom-right<br><br><small style="color: #ff6600;"><strong>BIG KAHUNA FEATURES:</strong><br>• 10000 pre-tessellated variants<br>• Lightning-fast instantiation<br>• Ultimate stress test<br>• 10-story building simulation</small></div></body></html>
+        }
+        
+        /* Floor control styling */
+        .floor-checkbox {
+            margin: 3px 0;
+            display: flex;
+            align-items: center;
+        }
+        .floor-checkbox input {
+            margin-right: 6px;
+            transform: scale(1.1);
+        }
+        .floor-checkbox label {
+            cursor: pointer;
+            user-select: none;
+            font-size: 12px;
+        }
+        
+        /* Design control styling */
+        #design-run-btn {
+            background: linear-gradient(45deg, #ff00ff, #ff6600);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(255, 0, 255, 0.3);
+        }
+        #design-run-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(255, 0, 255, 0.5);
+        }
+        #design-run-btn:active {
+            transform: scale(0.95);
+        }
+        #design-run-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Floor controls scrollbar styling */
+        #floor-controls::-webkit-scrollbar {
+            width: 6px;
+        }
+        #floor-controls::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+        #floor-controls::-webkit-scrollbar-thumb {
+            background: rgba(255,102,0,0.6);
+            border-radius: 3px;
+        }
+        #floor-controls::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,102,0,0.8);
+        }</style><body><div id="viewport"></div><div id="loader"><h2>🌺 THE BIG KAHUNA 🌺</h2><p id="progress-text">Initializing ultimate stress test...</p><p id="time-info">Pre-tessellating 10000-variant joist library</p><div id="stress-warning"><strong>⚠️ ULTIMATE STRESS TEST ⚠️</strong><br>This demo creates ~10,000 joist instances.</div></div><div id="info"><strong>🌺 THE BIG KAHUNA - Ultimate Stress Test 🌺</strong><br><span style="color: #ff6600;">10 Floors × 10 Bays × 100 Joists = <strong>10,000 Joists</strong></span><br><span style="color: #00ff00;">~10000 unique marks from library</span><br>Joist Spacing: 8 feet<br>Bay Width: 48 feet<br>Story Height: 32 feet<br>Building Height: 320 feet<br><small style="color: #00ff00;">✓ Using pre-tessellated library approach</small></div><div id="floor-controls"><strong>🏢 Floor Visibility (Big Kahuna)</strong><br><div id="floor-checkboxes"></div><small style="color: #ccc; margin-top: 8px; display: block;">10 floors × 1000 joists each</small></div><div id="design-controls"><strong>🎨 Design Analysis (Big Kahuna)</strong><br><button id="design-run-btn">Simulate Joist Design Run</button><div style="margin-top: 8px; font-size: 12px; color: #ccc;">🔴 Over-stressed &nbsp; 🟡 Near-limit &nbsp; 🟢 Good<br><span style="color: #ff6600;">10,000 joist analysis</span></div></div><div id="performance-info"><strong>🚀 Performance Monitor</strong><br><span id="fps">FPS: --</span><br><span id="triangles">Triangles: --</span><br><span id="draw-calls">Draw Calls: --</span><br><span id="memory">Memory: --</span><br><span id="instantiation-speed">Avg Instantiation: --</span><br><span id="gpu-memory">GPU Memory: --</span></div><div id="library-info"><strong>📚 Joist Library (Big Kahuna)</strong><br><span id="library-variants">Variants: --</span><br><span id="library-memory">Library Size: --</span><br><span id="library-specs">Length Range: --</span><br><span id="library-depths">Depth Range: --</span><br><span id="library-patterns">Web Patterns: --</span><br><span id="library-revisions">Design Revisions: --</span><br><span id="library-specifications">Specifications: --</span><br><span id="unique-joists">Unique Instances: --</span></div><div id="controls-info"><b>🎮 Navigation</b><br>Rotate: Left Mouse<br>Pan: Right Mouse<br>Zoom: Mouse Wheel<br><br><b>📐 View Controls</b><br>Toggle: Top-right button<br>View Cube: Bottom-right<br><br><small style="color: #ff6600;"><strong>BIG KAHUNA FEATURES:</strong><br>• 10000 pre-tessellated variants<br>• Lightning-fast instantiation<br>• Ultimate stress test<br>• 10-story building simulation<br>• Real-time floor visibility<br>• Design analysis simulation</small></div></body></html>

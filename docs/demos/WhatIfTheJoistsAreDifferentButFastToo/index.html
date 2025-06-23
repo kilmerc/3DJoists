@@ -11,24 +11,26 @@
 			top: 10px;
 			left: 10px;
 			color: white;
-			background: rgba(0,0,0,0.7);
-			padding: 10px;
-			border-radius: 5px;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
 			font-family: Arial, sans-serif;
 			font-size: 14px;
+			border: 2px solid #00ff00;
 			z-index: 100;
 		}
 		#controls-info {
 			position: absolute;
-			bottom: 150px;
+			bottom: 220px;
 			right: 10px;
 			color: white;
-			background: rgba(0,0,0,0.7);
-			padding: 10px;
-			border-radius: 5px;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
 			font-family: Arial, sans-serif;
 			font-size: 14px;
 			text-align: right;
+			border: 2px solid #ff6600;
 			z-index: 100;
 		}
 		#performance-info {
@@ -36,24 +38,52 @@
 			top: 60px;
 			right: 10px;
 			color: white;
-			background: rgba(0,0,0,0.7);
-			padding: 10px;
-			border-radius: 5px;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
 			font-family: Arial, sans-serif;
 			font-size: 14px;
 			text-align: right;
+			border: 2px solid #00ff00;
 			z-index: 100;
 		}
 		#library-info {
 			position: absolute;
-			bottom: 300px;
+			bottom: 370px;
 			left: 10px;
 			color: white;
-			background: rgba(0,0,0,0.7);
-			padding: 10px;
-			border-radius: 5px;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
 			font-family: Arial, sans-serif;
 			font-size: 14px;
+			border: 2px solid #0066ff;
+			z-index: 100;
+		}
+		#floor-controls {
+			position: absolute;
+			top: 150px;
+			left: 10px;
+			color: white;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			border: 2px solid #ff6600;
+			z-index: 100;
+		}
+		#design-controls {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			color: white;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			border: 2px solid #ff00ff;
 			z-index: 100;
 		}
         #loader {
@@ -102,4 +132,45 @@
         }
         .view-btn:active {
             transform: scale(0.95);
-        }</style><body><div id="viewport"></div><div id="loader"><h2>Simulating Library-Based Approach...</h2><p id="progress-text">Initializing...</p><p id="time-info">Pre-tessellating joist library (one-time cost)</p></div><div id="info"><strong>Library-Based Unique Joists</strong><br>5 Floors × 10 Bays × 100 Joists = 5000 Joists, 1000 unique marks<br>Joist Spacing: 8 feet<br>Bay Width: 48 feet<br>Story Height: 32 feet<br><small style="color: #00ff00;">✓ Using pre-tessellated library</small></div><div id="performance-info"><strong>Performance Monitor</strong><br><span id="fps">FPS: --</span><br><span id="triangles">Triangles: --</span><br><span id="draw-calls">Draw Calls: --</span><br><span id="memory">Memory: --</span><br><span id="instantiation-speed">Avg Instantiation: --</span></div><div id="library-info"><strong>Joist Library</strong><br><span id="library-variants">Variants: --</span><br><span id="library-memory">Library Size: --</span><br><span id="library-specs">Specs: --</span><br><span id="unique-joists">Unique Instances: --</span></div><div id="controls-info"><b>Navigation</b><br>Rotate: Left Mouse<br>Pan: Right Mouse<br>Zoom: Mouse Wheel<br><br><b>📐 View Controls</b><br>Toggle: Top-right button<br>View Cube: Bottom-right<br><br><small style="color: #00ff00;">Simulates C++ library approach:<br>• 1000 pre-tessellated variants<br>• Lightning-fast instantiation<br>• Minimal runtime overhead</small></div></body></html>
+        }
+        
+        /* Floor control styling */
+        .floor-checkbox {
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+        }
+        .floor-checkbox input {
+            margin-right: 8px;
+            transform: scale(1.2);
+        }
+        .floor-checkbox label {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        /* Design control styling */
+        #design-run-btn {
+            background: linear-gradient(45deg, #ff00ff, #ff6600);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(255, 0, 255, 0.3);
+        }
+        #design-run-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(255, 0, 255, 0.5);
+        }
+        #design-run-btn:active {
+            transform: scale(0.95);
+        }
+        #design-run-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }</style><body><div id="viewport"></div><div id="loader"><h2>Simulating Library-Based Approach...</h2><p id="progress-text">Initializing...</p><p id="time-info">Pre-tessellating joist library (one-time cost)</p></div><div id="info"><strong>Library-Based Unique Joists</strong><br>5 Floors × 10 Bays × 100 Joists = 5000 Joists, 1000 unique marks<br>Joist Spacing: 8 feet<br>Bay Width: 48 feet<br>Story Height: 32 feet<br><small style="color: #00ff00;">✓ Using pre-tessellated library</small></div><div id="floor-controls"><strong>🏢 Floor Visibility</strong><br><div id="floor-checkboxes"></div><small style="color: #ccc; margin-top: 8px; display: block;">Click to show/hide floors</small></div><div id="design-controls"><strong>🎨 Design Analysis</strong><br><button id="design-run-btn">Simulate Joist Design Run</button><div style="margin-top: 8px; font-size: 12px; color: #ccc;">🔴 Over-stressed &nbsp; 🟡 Near-limit &nbsp; 🟢 Good</div></div><div id="performance-info"><strong>Performance Monitor</strong><br><span id="fps">FPS: --</span><br><span id="triangles">Triangles: --</span><br><span id="draw-calls">Draw Calls: --</span><br><span id="memory">Memory: --</span><br><span id="instantiation-speed">Avg Instantiation: --</span></div><div id="library-info"><strong>Joist Library</strong><br><span id="library-variants">Variants: --</span><br><span id="library-memory">Library Size: --</span><br><span id="library-specs">Specs: --</span><br><span id="unique-joists">Unique Instances: --</span></div><div id="controls-info"><b>🎮 Navigation</b><br>Rotate: Left Mouse<br>Pan: Right Mouse<br>Zoom: Mouse Wheel<br><br><b>📐 View Controls</b><br>Toggle: Top-right button<br>View Cube: Bottom-right<br><br><small style="color: #00ff00;">Simulates C++ library approach:<br>• 1000 pre-tessellated variants<br>• Lightning-fast instantiation<br>• Minimal runtime overhead</small></div></body></html>
