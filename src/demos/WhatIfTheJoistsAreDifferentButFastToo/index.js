@@ -204,9 +204,8 @@ async function main() {
     updateLibraryInfo(stats, result.uniqueVariantsUsed, result.avgInstantiationTime);
     
     // Setup performance monitoring
-    const renderer = scene.userData?.renderer;
-    if (renderer) {
-      setupPerformanceMonitor(renderer);
+    if (scene.userData?.renderer) {
+      setupPerformanceMonitor(scene.userData.renderer);
     }
     
     setTimeout(() => {
