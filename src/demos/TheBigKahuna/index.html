@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>OpenCascade.js :: The Big Kahuna - 10K Joists Stress Test</title>
+	</head>
+	<style>
+		body {
+			margin: 0;
+			overflow: hidden;
+		}
+		#viewport {
+			width: 100vw;
+			height: 100vh;
+		}
+		#info {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			color: white;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			border: 2px solid #ff6600;
+		}
+		#controls-info {
+			position: absolute;
+			bottom: 10px;
+			right: 10px;
+			color: white;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			text-align: right;
+			border: 2px solid #ff6600;
+		}
+		#performance-info {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			color: white;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			text-align: right;
+			border: 2px solid #00ff00;
+		}
+		#library-info {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			color: white;
+			background: rgba(0,0,0,0.8);
+			padding: 12px;
+			border-radius: 8px;
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			border: 2px solid #0066ff;
+		}
+        /* Added for the loader */
+		#loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-family: Arial, sans-serif;
+            border: 4px solid #ff6600;
+            box-sizing: border-box;
+        }
+        #loader.hidden {
+            display: none;
+        }
+        #loader h2 {
+            color: #ff6600;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        #progress-text {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #00ff00;
+        }
+        #time-info {
+            margin-top: 8px;
+            font-size: 16px;
+            color: #ccc;
+        }
+        #stress-warning {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255, 102, 0, 0.2);
+            border: 1px solid #ff6600;
+            border-radius: 5px;
+            font-size: 14px;
+            max-width: 500px;
+            text-align: center;
+        }
+	</style>
+	<body>
+		<div id="viewport"></div>
+
+        <div id="loader">
+            <h2>🌺 THE BIG KAHUNA 🌺</h2>
+            <p id="progress-text">Initializing ultimate stress test...</p>
+            <p id="time-info">Pre-tessellating 2000-variant joist library</p>
+        </div>
+
+		<div id="info">
+			<strong>🌺 THE BIG KAHUNA - Ultimate Stress Test 🌺</strong><br>
+			<span style="color: #ff6600;">10 Floors × 10 Bays × 100 Joists = <strong>10,000 Joists</strong></span><br>
+			<span style="color: #00ff00;">2000 unique marks from library</span><br>
+			Joist Spacing: 8 feet<br>
+			Bay Width: 48 feet<br>
+			Story Height: 32 feet<br>
+			Building Height: 320 feet<br>
+			<small style="color: #00ff00;">✓ Using pre-tessellated library approach</small>
+		</div>
+		
+		<div id="performance-info">
+			<strong>🚀 Performance Monitor</strong><br>
+			<span id="fps">FPS: --</span><br>
+			<span id="triangles">Triangles: --</span><br>
+			<span id="draw-calls">Draw Calls: --</span><br>
+			<span id="memory">Memory: --</span><br>
+			<span id="instantiation-speed">Avg Instantiation: --</span><br>
+			<span id="gpu-memory">GPU Memory: --</span>
+		</div>
+		
+		<div id="library-info">
+			<strong>📚 Joist Library (Big Kahuna)</strong><br>
+			<span id="library-variants">Variants: --</span><br>
+			<span id="library-memory">Library Size: --</span><br>
+			<span id="library-specs">Length Range: --</span><br>
+			<span id="library-depths">Depth Range: --</span><br>
+			<span id="library-patterns">Web Patterns: --</span><br>
+			<span id="unique-joists">Unique Instances: --</span>
+		</div>
+		
+		<div id="controls-info">
+			<b>🎮 Navigation</b><br>
+			Rotate: Left Mouse<br>
+			Pan: Right Mouse<br>
+			Zoom: Mouse Wheel<br>
+			<br>
+			<small style="color: #ff6600;"><strong>BIG KAHUNA FEATURES:</strong><br>
+			• 2000 pre-tessellated variants<br>
+			• Lightning-fast instantiation<br>
+			• Ultimate stress test<br>
+			• 10-story building simulation</small>
+		</div>
+	</body>
+</html>
