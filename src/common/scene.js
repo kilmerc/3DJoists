@@ -1,3 +1,17 @@
+/**
+ * Three.js Scene Setup and Management
+ * 
+ * This module provides functionality for setting up a complete 3D viewport with:
+ * - Perspective and orthographic camera modes with seamless switching
+ * - Orbit controls for navigation
+ * - View cube for quick camera positioning
+ * - Lighting setup optimized for CAD geometry
+ * - Automatic window resizing handling
+ * 
+ * The scene is designed specifically for architectural/engineering applications
+ * where precise navigation and view control is essential.
+ */
+
 import {
   AmbientLight,
   DirectionalLight,
@@ -16,32 +30,42 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import openCascadeHelper from "./openCascadeHelper.js";
 
 /**
- * Enhanced Three.js scene setup with camera controls and view cube
+ * Sets up a complete Three.js viewport with enhanced camera controls and view cube
+ * 
+ * Creates a professional CAD-style viewport with:
+ * - Dual camera system (perspective/orthographic)
+ * - Interactive view cube for standard views
+ * - Professional lighting setup
+ * - Responsive design
+ * 
+ * @returns {Scene} Configured Three.js scene with userData containing controls
  */
 export function setupThreeJSViewport() {
+  // === SCENE INITIALIZATION ===
   var scene = new Scene();
-  scene.background = new Color(0x282c34);
+  scene.background = new Color(0x282c34); // Dark gray background
 
-  // Create both perspective and orthographic cameras
+  // === CAMERA SETUP ===
+  // Create both camera types - user can switch between them
   var perspectiveCamera = new PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    20000
+    75,                               // Field of view
+    window.innerWidth / window.innerHeight, // Aspect ratio
+    0.1,                             // Near clipping plane
+    20000                            // Far clipping plane
   );
+  
   var orthographicCamera = new OrthographicCamera(
-    -5000,
-    5000,
-    5000,
-    -5000,
-    0.1,
-    20000
+    -5000, 5000,  // Left, right bounds
+    5000, -5000,  // Top, bottom bounds  
+    0.1,          // Near clipping plane
+    20000         // Far clipping plane
   );
 
   // Start with perspective camera
   var currentCamera = perspectiveCamera;
   var isPerspective = true;
 
+  // === RENDERER SETUP ===
   var renderer = new WebGLRenderer({ antialias: true });
   const viewport = document.getElementById("viewport");
   if (!viewport) {
@@ -49,16 +73,19 @@ export function setupThreeJSViewport() {
     return;
   }
 
-  // Handle window resizing for both cameras
+  /**
+   * Updates renderer and camera sizes when window is resized
+   * Maintains proper aspect ratios for both camera types
+   */
   const updateSize = () => {
     const viewportRect = viewport.getBoundingClientRect();
     renderer.setSize(viewportRect.width, viewportRect.height);
 
-    // Update perspective camera
+    // Update perspective camera aspect ratio
     perspectiveCamera.aspect = viewportRect.width / viewportRect.height;
     perspectiveCamera.updateProjectionMatrix();
 
-    // Update orthographic camera
+    // Update orthographic camera bounds to maintain aspect ratio
     const aspect = viewportRect.width / viewportRect.height;
     const frustumSize = 10000;
     orthographicCamera.left = (-frustumSize * aspect) / 2;
@@ -68,26 +95,35 @@ export function setupThreeJSViewport() {
     orthographicCamera.updateProjectionMatrix();
   };
 
+  // Set up resize handling and initial sizing
   window.addEventListener("resize", updateSize);
   updateSize();
-
   viewport.appendChild(renderer.domElement);
 
-  // Lighting setup
-  const light = new AmbientLight(0x606060);
+  // === LIGHTING SETUP ===
+  // Professional 3-point lighting setup for CAD visualization
+  
+  // Ambient light provides base illumination
+  const light = new AmbientLight(0x606060); // Soft gray ambient light
   scene.add(light);
+  
+  // Primary directional light (key light)
   const directionalLight = new DirectionalLight(0xffffff, 0.75);
   directionalLight.position.set(500, 500, 500);
   scene.add(directionalLight);
+  
+  // Secondary directional light (fill light) from opposite direction
   const directionalLight2 = new DirectionalLight(0xffffff, 0.35);
   directionalLight2.position.set(-500, -500, -500);
   scene.add(directionalLight2);
 
-  // Set initial camera positions
+  // === CAMERA POSITIONING ===
+  // Set initial positions for both cameras (isometric-style view)
   perspectiveCamera.position.set(3500, 2000, 3500);
   orthographicCamera.position.set(3500, 2000, 3500);
 
-  // Setup controls for both cameras
+  // === ORBIT CONTROLS SETUP ===
+  // Create separate controls for each camera type
   const perspectiveControls = new OrbitControls(
     perspectiveCamera,
     renderer.domElement
@@ -97,14 +133,15 @@ export function setupThreeJSViewport() {
     renderer.domElement
   );
 
-  perspectiveControls.screenSpacePanning = true;
+  // Configure controls for CAD-style navigation
+  perspectiveControls.screenSpacePanning = true;  // Pan in screen space
   orthographicControls.screenSpacePanning = true;
-  perspectiveControls.target.set(0, 0, 0);
+  perspectiveControls.target.set(0, 0, 0);        // Look at origin
   orthographicControls.target.set(0, 0, 0);
 
   var currentControls = perspectiveControls;
 
-  // Create camera toggle button
+  // === CAMERA TOGGLE BUTTON ===
   const cameraToggleButton = document.createElement("button");
   cameraToggleButton.innerHTML = "📹 Perspective";
   cameraToggleButton.style.cssText = `
@@ -123,6 +160,7 @@ export function setupThreeJSViewport() {
     transition: all 0.2s ease;
   `;
 
+  // Button hover effects
   cameraToggleButton.addEventListener("mouseenter", () => {
     cameraToggleButton.style.background = "rgba(0,255,0,0.2)";
   });
@@ -131,7 +169,8 @@ export function setupThreeJSViewport() {
     cameraToggleButton.style.background = "rgba(0,0,0,0.8)";
   });
 
-  // Create view cube with adjusted positioning to avoid overlap
+  // === VIEW CUBE SETUP ===
+  // Interactive view cube for quick camera positioning
   const viewCube = document.createElement("div");
   viewCube.style.cssText = `
     position: absolute;
@@ -147,6 +186,7 @@ export function setupThreeJSViewport() {
     color: white;
   `;
 
+  // Create view cube HTML structure
   viewCube.innerHTML = `
     <div style="text-align: center; margin-bottom: 8px; font-weight: bold; color: #0066ff;">View Cube</div>
     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 120px;">
@@ -166,7 +206,7 @@ export function setupThreeJSViewport() {
     </div>
   `;
 
-  // Style view cube buttons
+  // === VIEW CUBE BUTTON STYLING ===
   const style = document.createElement("style");
   style.textContent = `
     .view-btn {
@@ -190,11 +230,14 @@ export function setupThreeJSViewport() {
   `;
   document.head.appendChild(style);
 
-  // Add elements to viewport
+  // Add UI elements to viewport
   viewport.appendChild(cameraToggleButton);
   viewport.appendChild(viewCube);
 
-  // Camera toggle functionality
+  /**
+   * Toggles between perspective and orthographic camera modes
+   * Preserves camera position and target when switching
+   */
   function toggleCamera() {
     // Save current position and target
     const currentPos = currentCamera.position.clone();
@@ -204,14 +247,14 @@ export function setupThreeJSViewport() {
       // Switch to orthographic
       currentCamera = orthographicCamera;
       currentControls = orthographicControls;
-      cameraToggleButton.innerHTML = "📐 Orthographic"; // NOW SHOWS CURRENT
+      cameraToggleButton.innerHTML = "📐 Orthographic";
       cameraToggleButton.style.borderColor = "#ff6600";
       isPerspective = false;
     } else {
       // Switch to perspective
       currentCamera = perspectiveCamera;
       currentControls = perspectiveControls;
-      cameraToggleButton.innerHTML = "📹 Perspective"; // NOW SHOWS CURRENT
+      cameraToggleButton.innerHTML = "📹 Perspective";
       cameraToggleButton.style.borderColor = "#00ff00";
       isPerspective = true;
     }
@@ -222,12 +265,17 @@ export function setupThreeJSViewport() {
     currentControls.update();
   }
 
-  // View cube functionality
+  /**
+   * Sets the camera to a predefined view with smooth animation
+   * 
+   * @param {string} viewType - Type of view (top, front, iso, etc.)
+   */
   function setView(viewType) {
     const distance = 5000;
     let position,
       target = new Vector3(0, 0, 0);
 
+    // Define camera positions for standard views
     switch (viewType) {
       case "top":
         position = new Vector3(0, distance, 0);
@@ -270,7 +318,7 @@ export function setupThreeJSViewport() {
         position = new Vector3(3500, 2000, 3500);
     }
 
-    // Animate camera to new position
+    // Smooth animation to new view
     const startPos = currentCamera.position.clone();
     const startTarget = currentControls.target.clone();
 
@@ -282,9 +330,10 @@ export function setupThreeJSViewport() {
       const elapsed = performance.now() - startTime;
       progress = Math.min(elapsed / animationDuration, 1);
 
-      // Smooth easing function
+      // Smooth easing function (ease-out cubic)
       const eased = 1 - Math.pow(1 - progress, 3);
 
+      // Interpolate camera position and target
       currentCamera.position.lerpVectors(startPos, position, eased);
       currentControls.target.lerpVectors(startTarget, target, eased);
       currentControls.update();
@@ -297,7 +346,7 @@ export function setupThreeJSViewport() {
     animate();
   }
 
-  // Add event listeners
+  // === EVENT LISTENERS ===
   cameraToggleButton.addEventListener("click", toggleCamera);
 
   viewCube.addEventListener("click", (event) => {
@@ -307,7 +356,7 @@ export function setupThreeJSViewport() {
     }
   });
 
-  // Animation loop
+  // === ANIMATION LOOP ===
   function animate() {
     requestAnimationFrame(animate);
     currentControls.update();
@@ -315,7 +364,8 @@ export function setupThreeJSViewport() {
   }
   animate();
 
-  // Store references for external access
+  // === STORE REFERENCES ===
+  // Store references in scene.userData for external access
   scene.userData = {
     renderer: renderer,
     perspectiveCamera: perspectiveCamera,
@@ -330,18 +380,35 @@ export function setupThreeJSViewport() {
 }
 
 /**
- * Tessellates an OpenCascade shape and adds it to the scene.
+ * Tessellates an OpenCascade shape and adds it to the scene as a mesh
+ * 
+ * This is a legacy function that uses the older openCascadeHelper approach.
+ * For new code, consider using the more efficient tessellation methods
+ * found in the demo-specific files.
+ * 
+ * @param {Object} openCascade - OpenCascade.js instance
+ * @param {Object} shape - OpenCascade shape to add
+ * @param {Scene} scene - Three.js scene to add the mesh to
  */
 export async function addShapeToScene(openCascade, shape, scene) {
+  // Initialize the helper with the OpenCascade instance
   openCascadeHelper.setOpenCascade(openCascade);
 
+  // === TESSELLATION PROCESS ===
+  // Convert OpenCascade shape to mesh data
   const facelist = await openCascadeHelper.tessellate(shape);
+  
+  // Combine all face data into unified arrays
   const [locVertexcoord, locNormalcoord, locTriIndices] =
     await openCascadeHelper.joinPrimitives(facelist);
+  
+  // Calculate total triangle count
   const tot_triangle_count = facelist.reduce(
     (a, b) => a + b.number_of_triangles,
     0
   );
+  
+  // Generate Three.js compatible geometry data
   const [vertices, faces] = await openCascadeHelper.generateGeometry(
     tot_triangle_count,
     locVertexcoord,
@@ -349,22 +416,31 @@ export async function addShapeToScene(openCascade, shape, scene) {
     locTriIndices
   );
 
+  // === MESH CREATION ===
+  // Create material with standard properties for CAD visualization
   const objectMat = new MeshStandardMaterial({
-    color: new Color(0.8, 0.8, 0.8),
-    metalness: 0.2,
-    roughness: 0.6,
+    color: new Color(0.8, 0.8, 0.8), // Light gray
+    metalness: 0.2,                   // Slight metallic look
+    roughness: 0.6,                   // Not too shiny
   });
+  
+  // Create Three.js geometry and assign mesh data
   const geometry = new Geometry();
   geometry.vertices = vertices;
   geometry.faces = faces;
+  
+  // Create the final mesh
   const object = new Mesh(geometry, objectMat);
-  object.name = "shape";
+  object.name = "shape"; // Name for easy identification
 
+  // === SCENE MANAGEMENT ===
   // Remove any existing shape before adding the new one
+  // This prevents accumulation of multiple shapes
   const existingShape = scene.getObjectByName("shape");
   if (existingShape) {
     scene.remove(existingShape);
   }
 
+  // Add the new shape to the scene
   scene.add(object);
 }

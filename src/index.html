@@ -109,53 +109,5 @@
         </li>
       </ul>
     </ul>
-
-    <hr>
-
-    <h3>How This Works: A Scalable Architecture for Complex 3D Geometry</h3>
-    <p>
-      The demos above illustrate a journey from a slow, "brute-force" approach to a highly optimized, library-based architecture. The final and fastest examples, like "The Big Kahuna," simulate a powerful real-world strategy. The following is a summary of that proposed architecture.
-    </p>
-
-    <h4>1. The Core Problem: Runtime Geometric Modeling is Slow</h4>
-    <p>
-      The initial demos (<code>Joists</code>, <code>BaysOfJoists</code>, etc.) build each joist from scratch every time it's needed. This involves numerous complex calculations using the OpenCascade geometry kernel. While precise, this process is computationally expensive. As seen in the <code>WhatIfTheJoistsAreDifferent</code> demo, when you try to create thousands of unique objects this way, the performance overhead of constantly communicating with the geometry engine becomes a major bottleneck, leading to very long load times.
-    </p>
-
-    <h4>2. The Solution Part 1: A Library of Precise Components</h4>
-    <p>
-      Instead of building entire joists at runtime, the optimized approach is to create a library of fundamental <strong>components</strong>. The key difference is that these components are stored as a precise, mathematical representation known as <strong>NURBS</strong> (Non-Uniform Rational B-Splines).
-    </p>
-    <p>
-      In this model, the OpenCascade C++ engine performs the heavy geometric modeling for each component <strong>once</strong> to generate this NURBS data. The library would contain:
-    </p>
-    <ul>
-      <li>Every type and size of <strong>angle</strong>, <strong>rod</strong>, and <strong>gusset plate</strong></li>
-      <li>Various <strong>bolts, welds</strong>, and other connection hardware</li>
-    </ul>
-    <p>
-      Each of these items is stored in the library as a lightweight, precise NURBS object. This "library creation" is a one-time, upfront cost.
-    </p>
-
-    <h4>3. The Solution Part 2: Lightweight Assembly and Discretization</h4>
-    <p>
-      At runtime, the application acts as an assembler. When it needs to build a unique joist:
-    </p>
-    <ol>
-      <li> It determines which NURBS components are needed.</li>
-      <li> It performs a nearly instantaneous lookup from the library to get the NURBS data for each part.</li>
-      <li> It <strong>assembles</strong> the final joist by positioning these NURBS components.</li>
-    </ol>
-    <p>
-      Only after the complete, unique joist is assembled at this mathematical level does the final step, <strong>discretization</strong> (or tessellation), occur. This is the process of converting the precise NURBS geometry of the final assembly into triangles that the GPU can render.
-    </p>
-
-    <h4>4. The Rendering Engine: Full Control with Keystone.js</h4>
-    <p>
-      Instead of using a general-purpose rendering library like Three.js, this architecture uses a lightweight, in-house script (referred to as <code>MeshGL.js</code> or <code>Keystone.js</code>). This script's job is to take the triangulated geometry from the discretization step and feed it directly to the GPU for rendering.
-    </p>
-    <p>
-      The reason for this is <strong>complete control</strong>. Using a custom rendering engine ensures that every part of the process is understood and can be optimized. If performance issues arise, there are no ambiguities from a third-party library; every "dusty corner" of the rendering pipeline is accessible for troubleshooting and enhancement.
-    </p>
   </body>
 </html>
